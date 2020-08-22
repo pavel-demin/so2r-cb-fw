@@ -4,6 +4,8 @@ PART = STM32G071xx
 
 OBJECTS = main.o startup.o
 
+vpath %.c src
+
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-ld
 OBJCOPY = arm-none-eabi-objcopy
