@@ -1,0 +1,23 @@
+Installing GCC:
+
+  source helpers/install_gcc.sh
+
+  export PATH=$PATH:/opt/gcc-arm-none-eabi-9-2020-q2-update/bin
+
+  echo PATH=\$PATH:/opt/gcc-arm-none-eabi-9-2020-q2-update/bin >> ~/.profile
+
+Installing required packages:
+
+  sudo apt-get install git make automake libtool libusb-1.0-0-dev
+
+Installing OpenOCD:
+
+  source helpers/install_openocd.sh
+
+  export PATH=$PATH:/opt/openocd/bin
+
+  echo PATH=\$PATH:/opt/openocd/bin >> ~/.profile
+
+Compiling and running program:
+
+  make install
