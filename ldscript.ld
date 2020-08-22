@@ -14,6 +14,11 @@ SECTIONS {
     . = ALIGN(4);
     KEEP(* (.vector_table))
     * (.text*)
+    . = ALIGN(4);
+  } >flash
+
+  .rodata : {
+    . = ALIGN(4);
     * (.rodata*)
     . = ALIGN(4);
   } >flash
