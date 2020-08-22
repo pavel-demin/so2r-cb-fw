@@ -11,7 +11,7 @@ LD = arm-none-eabi-gcc
 OBJCOPY = arm-none-eabi-objcopy
 
 CFLAGS = -Wall -Os -mthumb -march=armv6-m -mtune=cortex-m0plus \
-  -fdata-sections -ffunction-sections -D$(PART) -ICMSIS
+  -flto -fdata-sections -ffunction-sections -D$(PART) -ICMSIS
 
 LDFLAGS = -mthumb -march=armv6-m -mtune=cortex-m0plus \
   -nostartfiles -Wl,--script,ldscript.ld -Wl,--gc-sections
