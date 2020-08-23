@@ -1,6 +1,6 @@
 ENTRY(Reset_Handler)
 
-_data_flash_start = LOADADDR(.data);
+_flash_data_start = LOADADDR(.data);
 
 _stack_end = ORIGIN(sram) + LENGTH(sram);
 
@@ -25,10 +25,10 @@ SECTIONS {
 
   .data : {
     . = ALIGN(4);
-    _data_start = .;
+    _sram_data_start = .;
     * (.data*)
     . = ALIGN(4);
-    _data_end = .;
+    _sram_data_end = .;
   } >sram AT>flash
 
   .bss : {

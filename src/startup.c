@@ -1,9 +1,9 @@
 #include "stm32g0xx.h"
 
 extern uint32_t _stack_end;
-extern uint32_t _data_flash_start;
-extern uint32_t _data_start;
-extern uint32_t _data_end;
+extern uint32_t _flash_data_start;
+extern uint32_t _sram_data_start;
+extern uint32_t _sram_data_end;
 extern uint32_t _bss_start;
 extern uint32_t _bss_end;
 
@@ -14,9 +14,9 @@ void Reset_Handler()
   uint32_t *dst, *src;
 
   // copy .data section to RAM
-  dst = &_data_start;
-  src = &_data_flash_start;
-  while(dst < &_data_end) *dst++ = *src++;
+  dst = &_sram_data_start;
+  src = &_flash_data_start;
+  while(dst < &_sram_data_end) *dst++ = *src++;
 
   // fill .bss section with zeros
   dst = &_bss_start;
