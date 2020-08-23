@@ -2,11 +2,11 @@ ENTRY(Reset_Handler)
 
 _data_flash_start = LOADADDR(.data);
 
-_stack_end = ORIGIN(ram) + LENGTH(ram);
+_stack_end = ORIGIN(sram) + LENGTH(sram);
 
 MEMORY {
   flash (rx) : o = 0x08000000, l = 64k
-  ram (wx) : o = 0x20000000, l = 32k
+  sram (wx) : o = 0x20000000, l = 32k
 }
 
 SECTIONS {
@@ -29,7 +29,7 @@ SECTIONS {
     * (.data*)
     . = ALIGN(4);
     _data_end = .;
-  } >ram AT>flash
+  } >sram AT>flash
 
   .bss : {
     . = ALIGN(4);
@@ -38,5 +38,5 @@ SECTIONS {
     * (COMMON)
     . = ALIGN(4);
     _bss_end = .;
-  } >ram
+  } >sram
 }
