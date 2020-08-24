@@ -24,6 +24,8 @@ void Reset_Handler()
 
   // call main
   main();
+
+  while(1);
 }
 
 void Default_Handler()
