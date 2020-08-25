@@ -9,6 +9,8 @@ uint8_t ready = 0;
 uint8_t state[3] = {0};
 uint8_t button[3] = {0};
 
+const uint8_t bcd[12] = {15, 1, 2, 0, 3, 4, 5, 6, 7, 8, 9, 10};
+
 void input()
 {
   int32_t i;
@@ -53,9 +55,9 @@ void output()
   else if(code[0] == 9 || code[0] == 10) lpf = 5;
   else if(code[0] == 11 || code[0] == 0) lpf = 6;
 
-  data[0] = code[1] << 28 | i2c_buffer[0] >> 2;
+  data[0] = bcd[code[1]] << 28 | i2c_buffer[0] >> 2;
 
-  data[1] = code[2];
+  data[1] = bcd[code[2]];
   data[1] |= 1 << (code[0] + 4);
   data[1] |= 1 << (code[1] + 16);
   data[1] |= 1 << (code[2] + 28);
