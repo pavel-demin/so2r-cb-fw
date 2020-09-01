@@ -66,13 +66,13 @@ void output()
   data[1] |= 1 << (code[2] + 28);
 
   data[2] = (code[2] > 3) ? 1 << (code[2] - 4) : 0;
-  data[2] |= lpf << 8;
+  data[2] |= 1 << (lpf + 8);
   data[2] |= tx << 15;
   data[2] |= (ptt && tx == 0) << 16;
   data[2] |= (ptt && tx == 1) << 17;
   data[2] |= ptt << 18;
-  data[2] |= (att[0] == 1) << 19;
-  data[2] |= (att[1] == 1) << 20;
+  data[2] |= (att[0] == 0) << 19;
+  data[2] |= (att[1] == 0) << 20;
 
   bits[0] = ((data[1] >> 16) & 0x0fff) | ((data[2] << 4) & 0xf000);
   bits[1] = ((data[0] << 3) & 0x03f8) | ((data[0] >> 2) & 0x1c00) | ((data[1] >> 15) & 0xe000) | ((data[2] >> 12) & 0x0007);
