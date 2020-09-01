@@ -189,6 +189,9 @@ int main()
   // enable SPI1
   SPI1->CR1 |= SPI_CR1_SPE_Msk;
 
+  i2c_buffer[0] = 0x02100000;
+  output();
+
   // enable ARRM interrupt
   LPTIM1->IER |= LPTIM_IER_ARRMIE_Msk;
 
