@@ -58,6 +58,10 @@ void output()
   else if(code[0] == 9 || code[0] == 10) lpf = 5;
   else if(code[0] == 11 || code[0] == 0) lpf = 6;
 
+  if(button[2]) code[2] = 0;
+  if(button[1]) code[1] = 0;
+  if(button[0]) code[0] = 0;
+
   data[0] = bcd[code[1]] << 28 | i2c_buffer[0] >> 2;
 
   data[1] = bcd[code[2]];
@@ -118,6 +122,7 @@ int main()
 
   // configure PC as input
   GPIOC->MODER &= 0x0FFFCFFF;
+  GPIOC->PUPDR |= GPIO_PUPDR_PUPD15_0 | GPIO_PUPDR_PUPD14_0 | GPIO_PUPDR_PUPD6_0;
 
   // configure PA0 as output
   GPIOA->MODER &= ~GPIO_MODER_MODE0_1;
