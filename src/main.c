@@ -9,7 +9,8 @@ uint8_t ready = 0;
 uint8_t state[3] = {0};
 uint8_t button[3] = {0};
 
-const uint8_t bcd[12] = {15, 1, 2, 0, 3, 4, 5, 6, 7, 8, 9, 10};
+const uint32_t bcd[12] = {15, 1, 2, 0, 3, 4, 5, 6, 7, 8, 9, 10};
+const uint32_t ant[16] = {0, 0, 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 1};
 
 void input()
 {
@@ -36,13 +37,15 @@ void input()
 
 void output()
 {
-  int32_t i, tx, lpf, ptt;
+  int32_t i;
+  uint32_t tx, lpf, ptt, misc;
   uint32_t code[3], data[3];
   uint16_t bits[7];
   uint8_t att[2];
 
   tx = i2c_buffer[0] & 0x1;
   ptt = (i2c_buffer[0] >> 1) & 0x1;
+  misc = ((i2c_buffer[0] >> 7) & 0xC) | (i2c_buffer[0] & 0x3);
   att[0] = i2c_buffer[0] >> 20 & 0x1F;
   att[1] = i2c_buffer[0] >> 25 & 0x1F;
 
@@ -77,12 +80,13 @@ void output()
   data[2] |= ptt << 18;
   data[2] |= (att[0] == 0) << 19;
   data[2] |= (att[1] == 0) << 20;
+  data[2] |= ant[misc] << 21;
 
   bits[0] = ((data[1] >> 6) & 0x0400) | ((data[1] >> 8) & 0x0200) | ((data[1] >> 10) & 0x0100) | ((data[1] >> 15) & 0x00f0) | ((data[1] >> 16) & 0x0800) | ((data[1] >> 20) & 0x0008) | ((data[1] >> 22) & 0x0004) | ((data[1] >> 24) & 0x0002) | ((data[1] >> 26) & 0x0001) | ((data[2] << 4) & 0xf000);
   bits[1] = ((data[0] << 3) & 0x03f8) | ((data[0] << 1) & 0x8000) | ((data[0] >> 2) & 0x0c00) | ((data[2] << 9) & 0x7000) | ((data[2] >> 12) & 0x0007);
   bits[2] = ((data[0] << 5) & 0x3000) | ((data[0] >> 0) & 0x0e00) | ((data[0] >> 1) & 0xc000) | ((data[1] >> 20) & 0x0100) | ((data[1] >> 23) & 0x00c0) | ((data[1] >> 29) & 0x0004) | ((data[2] << 3) & 0x0008) | ((data[2] >> 0) & 0x0002) | ((data[2] >> 1) & 0x0020) | ((data[2] >> 2) & 0x0001) | ((data[2] >> 3) & 0x0010);
   bits[3] = ((data[0] >> 15) & 0x0004) | ((data[0] >> 24) & 0x00f0) | ((data[1] << 8) & 0x0f00) | ((data[1] << 2) & 0xf000) | ((data[2] >> 12) & 0x0008) | ((data[2] >> 16) & 0x0003);
-  bits[4] = ((data[1] << 2) & 0x0080) | ((data[1] >> 0) & 0x0010) | ((data[1] >> 4) & 0x000c) | ((data[1] >> 7) & 0x0002) | ((data[1] >> 8) & 0x0040) | ((data[1] >> 9) & 0x0001) | ((data[1] >> 10) & 0x0020) | ((data[2] >> 10) & 0x0700);
+  bits[4] = ((data[1] << 2) & 0x0080) | ((data[1] >> 0) & 0x0010) | ((data[1] >> 4) & 0x000c) | ((data[1] >> 7) & 0x0002) | ((data[1] >> 8) & 0x0040) | ((data[1] >> 9) & 0x0001) | ((data[1] >> 10) & 0x0020) | ((data[2] >> 10) & 0x1f00);
   bits[5] = ((data[0] >> 8) & 0x8000) | ((data[0] >> 15) & 0x00f8);
   bits[6] = ((data[0] >> 21) & 0x0078);
 
